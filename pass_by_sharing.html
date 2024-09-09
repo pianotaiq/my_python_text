@@ -7894,11 +7894,11 @@ item1 = 1, item2 = 2, rest = [3, 4, 5]
 <div class="jp-OutputArea-child">
 <div class="jp-OutputPrompt jp-OutputArea-prompt"></div>
 <div class="jp-RenderedText jp-OutputArea-output" data-mime-type="text/plain" tabindex="0">
-<pre>&lt;generator object &lt;genexpr&gt; at 0x104b79150&gt;
+<pre>&lt;generator object &lt;genexpr&gt; at 0x112bc1150&gt;
 ---------------
 [1, 4, 9, 16, 25]
 ---------------
-&lt;generator object &lt;genexpr&gt; at 0x104b79080&gt;
+&lt;generator object &lt;genexpr&gt; at 0x112bc1080&gt;
 ---------------
 0
 1
@@ -8008,7 +8008,7 @@ item1 = 1, item2 = 2, rest = [3, 4, 5]
 <span class="sd">可変オブジェクトの場合は、実引数を操作すると仮引数も同じように変更されるが</span>
 <span class="sd">不変オブジェクトの場合は、実引数を操作すると操作後は別のオブジェクトになり仮引数との関係は絶たれる</span>
 
-<span class="sd">見かけ上は値をコピーしているように見えるが（なので入門書には記載がないことがある）</span>
+<span class="sd">見かけ上は値をコピーしているように見えるが（なので入門書には記述がないことがある）</span>
 <span class="sd">実は値ではなく参照をコピーしたものの、実引数側の「変更」によって参照が外れ、</span>
 <span class="sd">仮引数は呼び出し時の不変オブジェクトのままになっている</span>
 
@@ -8024,7 +8024,7 @@ item1 = 1, item2 = 2, rest = [3, 4, 5]
 <span class="c1"># 普通の値渡しだと思っていたら「共有渡し」だった件</span>
 <span class="k">def</span> <span class="nf">add_two</span><span class="p">(</span><span class="n">i</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">'''</span>
-<span class="sd">    不変オブジェクトは「変更」によって破壊されるので、計算結果は返り値にしよう</span>
+<span class="sd">    不変オブジェクトは「変更」によって破棄されるので、計算結果は返り値にしよう</span>
 <span class="sd">    '''</span>
     <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">'id_before: </span><span class="si">{</span><span class="nb">id</span><span class="p">(</span><span class="n">i</span><span class="p">)</span><span class="si">}</span><span class="s1">'</span><span class="p">)</span>
     <span class="n">i</span> <span class="o">+=</span> <span class="mi">2</span>
@@ -8033,21 +8033,26 @@ item1 = 1, item2 = 2, rest = [3, 4, 5]
 
 <span class="n">a</span> <span class="o">=</span> <span class="mi">1</span>
 <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">'</span><span class="si">{</span><span class="n">a</span><span class="w"> </span><span class="si">= }</span><span class="s1">'</span><span class="p">)</span>
-<span class="n">ret</span> <span class="o">=</span> <span class="n">add_two</span><span class="p">(</span><span class="n">a</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">'</span><span class="si">{</span><span class="n">ret</span><span class="w"> </span><span class="si">= }</span><span class="s1">'</span><span class="p">)</span>
+<span class="n">a_plus_two</span> <span class="o">=</span> <span class="n">add_two</span><span class="p">(</span><span class="n">a</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">'</span><span class="si">{</span><span class="n">a_plus_two</span><span class="w"> </span><span class="si">= }</span><span class="s1">'</span><span class="p">)</span>
 <span class="nb">print</span><span class="p">(</span><span class="s1">'---------------'</span><span class="p">)</span>
 
 <span class="sd">'''</span>
 <span class="sd">最後に、不変オブジェクトの一部はキャッシュされる</span>
 <span class="sd">具体的に言うと、Pythonの最も一般的な実装であるCPythonの場合、</span>
-<span class="sd">-5〜256の範囲で同じ値を持つ変数は同じオブジェクトが使用される</span>
+<span class="sd">-5〜256の範囲で同じ値を持つ整数は同じオブジェクトが使用される</span>
+<span class="sd">言い換えれば、それぞれの値は前述のNoneと同じくシングルトンになっている</span>
 <span class="sd">'''</span>
 <span class="c1"># たとえ計算結果でも同じオブジェクトになる！</span>
-<span class="n">a</span> <span class="o">=</span> <span class="mi">257</span> <span class="o">-</span> <span class="mi">1</span>
-<span class="n">b</span> <span class="o">=</span> <span class="mi">255</span> <span class="o">+</span> <span class="mi">1</span>
+<span class="n">a</span> <span class="o">=</span> <span class="mi">257</span>
+<span class="n">b</span> <span class="o">=</span> <span class="mi">255</span>
 <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">'</span><span class="si">{</span><span class="n">a</span><span class="w"> </span><span class="si">= }</span><span class="s1">, </span><span class="si">{</span><span class="n">b</span><span class="w"> </span><span class="si">= }</span><span class="se">\n</span><span class="si">{</span><span class="p">(</span><span class="n">a</span><span class="w"> </span><span class="ow">is</span><span class="w"> </span><span class="n">b</span><span class="p">)</span><span class="w"> </span><span class="si">= }</span><span class="s1">'</span><span class="p">)</span>
+<span class="n">a</span> <span class="o">-=</span> <span class="mi">1</span>
+<span class="n">b</span> <span class="o">+=</span> <span class="mi">1</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">'</span><span class="si">{</span><span class="n">a</span><span class="w"> </span><span class="si">= }</span><span class="s1">, </span><span class="si">{</span><span class="n">b</span><span class="w"> </span><span class="si">= }</span><span class="se">\n</span><span class="si">{</span><span class="p">(</span><span class="n">a</span><span class="w"> </span><span class="ow">is</span><span class="w"> </span><span class="n">b</span><span class="p">)</span><span class="w"> </span><span class="si">= }</span><span class="s1">'</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s1">'---------------'</span><span class="p">)</span>
 
-<span class="c1"># 異なるオブジェクト</span>
+<span class="c1"># 上記範囲外では同じ値でも異なるオブジェクト！</span>
 <span class="n">a</span> <span class="o">=</span> <span class="mi">257</span>
 <span class="n">b</span> <span class="o">=</span> <span class="mi">257</span>
 <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">'</span><span class="si">{</span><span class="n">a</span><span class="w"> </span><span class="si">= }</span><span class="s1">, </span><span class="si">{</span><span class="n">b</span><span class="w"> </span><span class="si">= }</span><span class="se">\n</span><span class="si">{</span><span class="p">(</span><span class="n">a</span><span class="w"> </span><span class="ow">is</span><span class="w"> </span><span class="n">b</span><span class="p">)</span><span class="w"> </span><span class="si">= }</span><span class="s1">'</span><span class="p">)</span>
@@ -8063,7 +8068,7 @@ item1 = 1, item2 = 2, rest = [3, 4, 5]
 <div class="jp-OutputArea-child">
 <div class="jp-OutputPrompt jp-OutputArea-prompt"></div>
 <div class="jp-RenderedText jp-OutputArea-output" data-mime-type="text/plain" tabindex="0">
-<pre>4318758120
+<pre>4553749736
 ---------------
 True
 False
@@ -8071,27 +8076,30 @@ True
 ---------------
 [1, 2, 3, 4]
 [1, 2, 3, 4]
-4373979136
-4373979136
+4609066816
+4609066816
 True
 ---------------
 abc
-4318457536
+4553449152
 abcd
-4373980592
+4609120816
 ---------------
-4318457536
-4318457536
-4374017200
-4318457536
+4553449152
+4553449152
+4609328432
+4553449152
 ---------------
 a = 1
-id_before: 4318758120
-id_after : 4318758184
-ret = 3
+id_before: 4553749736
+id_after : 4553749800
+a_plus_two = 3
 ---------------
+a = 257, b = 255
+(a is b) = False
 a = 256, b = 256
 (a is b) = True
+---------------
 a = 257, b = 257
 (a is b) = False
 </pre>
